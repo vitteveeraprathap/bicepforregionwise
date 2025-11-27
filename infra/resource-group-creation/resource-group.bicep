@@ -9,31 +9,37 @@ targetScope = 'subscription'
 param environment string
 
 @allowed([
-  'scus'
-  'wcus'
-  'wus3'
-  'cus'
+  'wus2'
+  'cnd'
+  'eus'
+  'ind'
 ])
 param regionCode string
 
-param location string   // southcentralus, westcentralus, westus3, centralus
-param projectCode string   // btt, iit, bot, ntt...
+// RG physical location (southcentralus, centralus, etc.)
+param location string
 
+// Project code: btt, iit, bot, ntt...
+param projectCode string
+
+// Base tags from parameter file
 param tags object
 
-// Auto-generate resource group name
+// RG name
 var rgName = 'rg-${projectCode}-${environment}-${regionCode}-001'
 
+// Resource group
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: rgName
   location: location
 
-  // 🔥 Override tags dynamically so application tag = projectCode
+  // Override / add dynamic tags here
   tags: union(tags, {
     name: rgName
     environment: environment
     project: projectCode
-    application: projectCode     // <---- super important override
+    application: projectCode
+    department: '${projectCode} gdc architecture' // 🔥 dynamic department
   })
 }
 
