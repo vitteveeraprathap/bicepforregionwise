@@ -16,24 +16,24 @@ param environment string
 ])
 param regionCode string
 
-// Full Azure physical location: westus2, eastus, canadacentral, centralindia, etc.
-param location string
-
-// Dynamic project code: btt, iit, bot, ntt, etc
-param projectCode string
+param location string   // westus2, eastus, canadacentral, centralindia
+param projectCode string   // btt, iit, bot, ntt...
 
 param tags object
 
-// Generate RG name automatically
+// Auto-generate resource group name
 var rgName = 'rg-${projectCode}-${environment}-${regionCode}-001'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: rgName
   location: location
+
+  // 🔥 Override tags dynamically so application tag = projectCode
   tags: union(tags, {
     name: rgName
     environment: environment
     project: projectCode
+    application: projectCode     // <---- super important override
   })
 }
 

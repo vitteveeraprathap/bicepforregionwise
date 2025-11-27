@@ -13,7 +13,6 @@
         "department": "production",
         "cost-center": "600",
         "technical-manager": "prod-manager",
-        "application": "btt",
         "data-classification": "confidential"
       }
     }

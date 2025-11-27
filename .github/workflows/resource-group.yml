@@ -33,20 +33,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # --------------------------
-      # DYNAMIC AZURE CREDENTIALS
-      # --------------------------
+      # Login using dynamic credentials based on environment
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ github.event.inputs.environment == 'dev' && secrets.AZURE_CREDENTIALS_DEV || github.event.inputs.environment == 'sbx' && secrets.AZURE_CREDENTIALS_SBX || github.event.inputs.environment == 'uat' && secrets.AZURE_CREDENTIALS_UAT || secrets.AZURE_CREDENTIALS_PRD}}
+          creds: ${{ github.event.inputs.environment == 'dev' && secrets.AZURE_CREDENTIALS_DEV || github.event.inputs.environment == 'sbx' && secrets.AZURE_CREDENTIALS_SBX || github.event.inputs.environment == 'uat' && secrets.AZURE_CREDENTIALS_UAT || secrets.AZURE_CREDENTIALS_PRD }}
 
-      # --------------------------
-      # MAP REGION → SHORT CODE
-      # --------------------------
+      # Map region → short code
       - name: Map Region to Short Code
         id: region
         run: |
@@ -59,21 +54,13 @@ jobs:
           esac
           echo "code=$code" >> $GITHUB_OUTPUT
 
-      # --------------------------
-      # DEPLOY RESOURCE GROUP
-      # --------------------------
+      # Deploy RG using Bicep
       - name: Deploy Resource Group
         run: |
           ENV="${{ github.event.inputs.environment }}"
           REGION="${{ github.event.inputs.region }}"
           REGION_CODE="${{ steps.region.outputs.code }}"
           PROJECT="${{ github.event.inputs.project }}"
-
-          echo "Deploying to:"
-          echo "  Environment: $ENV"
-          echo "  Region: $REGION"
-          echo "  Region Code: $REGION_CODE"
-          echo "  Project: $PROJECT"
 
           az deployment sub create \
             --location "$REGION" \
