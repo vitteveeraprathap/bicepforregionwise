@@ -14,7 +14,7 @@ on:
           - prd
 
       region:
-        description: "Azure Region"
+        description: "Azure Region (RG location)"
         type: choice
         required: true
         options:
@@ -33,37 +33,53 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # Login using dynamic credentials based on environment
+      # ------------------------------
+      # Login using env-specific creds
+      # ------------------------------
       - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ github.event.inputs.environment == 'dev' && secrets.AZURE_CREDENTIALS_DEV || github.event.inputs.environment == 'sbx' && secrets.AZURE_CREDENTIALS_SBX || github.event.inputs.environment == 'uat' && secrets.AZURE_CREDENTIALS_UAT || secrets.AZURE_CREDENTIALS_PRD }}
 
-      # Map region → short code
+      # ------------------------------
+      # Map region -> short code
+      # ------------------------------
       - name: Map Region to Short Code
         id: region
         run: |
           case "${{ github.event.inputs.region }}" in
             southcentralus) code="scus" ;;
             westcentralus) code="wcus" ;;
-            westus3) code="wus3" ;;
-            centralus) code="cus" ;;
+            westus3)       code="wus3" ;;
+            centralus)     code="cus"  ;;
             *) echo "Region not supported"; exit 1 ;;
           esac
           echo "code=$code" >> $GITHUB_OUTPUT
 
-      # Deploy RG using Bicep
+      # ------------------------------
+      # Deploy Resource Group (Bicep)
+      # ------------------------------
       - name: Deploy Resource Group
         run: |
           ENV="${{ github.event.inputs.environment }}"
-          REGION="${{ github.event.inputs.region }}"
+          REGION="${{ github.event.inputs.region }}"          # RG location
           REGION_CODE="${{ steps.region.outputs.code }}"
           PROJECT="${{ github.event.inputs.project }}"
 
+          # Deployment *record* location (must stay same as old ones)
+          DEPLOY_LOCATION="westus2"
+
+          echo "Environment        : $ENV"
+          echo "RG location        : $REGION"
+          echo "Region short code  : $REGION_CODE"
+          echo "Project code       : $PROJECT"
+          echo "Deployment location: $DEPLOY_LOCATION"
+
           az deployment sub create \
-            --location "$REGION" \
+            --location "$DEPLOY_LOCATION" \
             --template-file infra/resource-group-creation/resource-group.bicep \
             --parameters \
               @infra/resource-group-creation/resource-group-${ENV}.parameters.json \
