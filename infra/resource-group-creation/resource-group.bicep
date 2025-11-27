@@ -9,10 +9,10 @@ targetScope = 'subscription'
 param environment string
 
 @allowed([
-  'wus2'
-  'cnd'
-  'eus'
-  'ind'
+  'scus'
+  'wcus'
+  'wus3'
+  'cus'
 ])
 param regionCode string
 
