@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyVaultName": {
+      "value": "kv-bot-dev-wus2-001"
+    },
+    "location": {
+      "value": "westus2"
+    },
+    "adminObjectId": {
+      "value": "62d28f57-80f0-45e6-aee7-b21edfc15caf"
+    },
+    "logAnalyticsName": {
+      "value": "law-btt-dev-wus2-001"
+    },
+    "diagnosticSettingName": {
+      "value": "diag-kv-bot-dev-wus2-001"
+    },
+    "tags": {
+      "value": {
+        "name": "kv-bot-dev-wus2-001",
+        "environment": "development",
+        "department": "ntt gdc architecture",
+        "cost-center": "510",
+        "technical-manager": "Mark Pope",
+        "application": "bot"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "westus2"
+    },
+    "resourceGroupName": {
+      "value": "rg-btt-uat-wus2-001"
+    },
+    "tags": {
+      "value": {
+        "name": "rg-btt-uat-wus2-001",
+        "application-owner": "veera",
+        "sla-tier": "app tier 1",
+        "dr-tag": "gold",
+        "business-criticality": "mission-critical",
+        "environment": "uat",
+        "purpose": "btt-implementation",
+        "department": "btt gdc architecture",
+        "cost-center": "510",
+        "technical-manager": "veera",
+        "application": "btt",
+        "data-classification": "confidential"
+      }
+    }
+  }
+}

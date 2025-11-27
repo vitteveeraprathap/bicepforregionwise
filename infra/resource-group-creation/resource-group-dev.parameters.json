@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environment": { "value": "dev" },
+    "tags": {
+      "value": {
+        "application-owner": "veera",
+        "sla-tier": "app tier 1",
+        "dr-tag": "gold",
+        "business-criticality": "mission-critical",
+        "purpose": "iiot-implementation",
+        "department": "btt gdc architecture",
+        "cost-center": "510",
+        "technical-manager": "veera",
+        "application": "btt",
+        "data-classification": "confidential"
+      }
+    }
+  }
+}

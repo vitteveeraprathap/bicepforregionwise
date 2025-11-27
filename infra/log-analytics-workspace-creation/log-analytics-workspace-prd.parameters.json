@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logAnalyticsName": {
+      "value": "law-btt-prd-wus2-001"
+    },
+    "location": {
+      "value": "westus2"
+    },
+    "retentionInDays": {
+      "value": 90
+    },
+    "tags": {
+      "value": {
+        "name": "law-btt-prd-wus2-001",
+        "environment": "production",
+        "department": "ntt gdc architecture",
+        "cost-center": "510",
+        "technical-manager": "veera",
+        "application": "btt"
+      }
+    }
+  }
+}

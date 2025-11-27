@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "acrName": { "value": "crbotdevwus2001" },
+    "location": { "value": "westus2" },
+    "sku": { "value": "Basic" },
+    "adminUserEnabled": { "value": false },
+    "logAnalyticsName": { "value": "law-btt-dev-wus2-001" },
+    "diagnosticSettingName": { "value": "diag-crbotdevwus2001" },
+    "tags": {
+      "value": {
+        "name": "crbotdevwus2001",
+        "environment": "development",
+        "department": "ntt gdc architecture",
+        "cost-center": "510",
+        "technical-manager": "Mark Pope",
+        "application": "bot"
+      }
+    }
+  }
+}

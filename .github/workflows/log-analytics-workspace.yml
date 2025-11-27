@@ -1,0 +1,34 @@
+name: Deploy Log Analytics Workspace
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment (dev/uat/test/prd)'
+        required: true
+        type: choice
+        options: 
+          - dev
+          - uat
+          - test
+          - prd
+        default: dev
+
+jobs:
+  validate-branch:
+    uses: ./.github/workflows/validate-branch.yml
+    with:
+      environment: ${{ github.event.inputs.environment }}
+
+  deploy-log-analytics:
+    needs: validate-branch
+    uses: ./.github/workflows/bicep-deploy.yml
+    with:
+      environment: ${{ github.event.inputs.environment }}
+      bicep_file: 'infra/log-analytics-workspace-creation/log-analytics-workspace.bicep'
+      parameters_file: 'infra/log-analytics-workspace-creation/log-analytics-workspace-${{ github.event.inputs.environment }}.parameters.json'
+      deployment_scope: 'group'
+      output_query: 'properties.outputs.logAnalyticsName.value'
+    secrets:
+      azure_credentials: ${{ github.event.inputs.environment == 'dev' && secrets.AZURE_CREDENTIALS_DEV || github.event.inputs.environment == 'uat' && secrets.AZURE_CREDENTIALS_UAT || github.event.inputs.environment == 'test' && secrets.AZURE_CREDENTIALS_TEST || secrets.AZURE_CREDENTIALS_PRD }}
+      resource_group_name: ${{ github.event.inputs.environment == 'dev' && secrets.RESOURCE_GROUP_DEV || github.event.inputs.environment == 'uat' && secrets.RESOURCE_GROUP_UAT || github.event.inputs.environment == 'test' && secrets.RESOURCE_GROUP_TEST || secrets.RESOURCE_GROUP_PRD }}
