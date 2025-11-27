@@ -9,14 +9,14 @@ targetScope = 'subscription'
 param environment string
 
 @allowed([
-  'wus2'
-  'cnd'
-  'eus'
-  'ind'
+  'scus'
+  'wcus'
+  'wus3'
+  'cus'
 ])
 param regionCode string
 
-param location string   // westus2, eastus, canadacentral, centralindia
+param location string   // southcentralus, westcentralus, westus3, centralus
 param projectCode string   // btt, iit, bot, ntt...
 
 param tags object

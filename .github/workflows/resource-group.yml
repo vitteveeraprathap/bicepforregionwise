@@ -18,10 +18,10 @@ on:
         type: choice
         required: true
         options:
-          - westus2
-          - eastus
-          - canadacentral
-          - centralindia
+          - southcentralus
+          - westcentralus
+          - westus3
+          - centralus
 
       project:
         description: "Project Code (btt / iit / bot / ntt...)"
@@ -46,10 +46,10 @@ jobs:
         id: region
         run: |
           case "${{ github.event.inputs.region }}" in
-            westus2) code="wus2" ;;
-            eastus) code="eus" ;;
-            canadacentral) code="cnd" ;;
-            centralindia) code="ind" ;;
+            southcentralus) code="scus" ;;
+            westcentralus) code="wcus" ;;
+            westus3) code="wus3" ;;
+            centralus) code="cus" ;;
             *) echo "Region not supported"; exit 1 ;;
           esac
           echo "code=$code" >> $GITHUB_OUTPUT
